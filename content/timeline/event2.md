@@ -1,8 +1,8 @@
 ---
-start_date: "2024-01"
-end_date:
-title: "Senior Research Engineer"
-description: "Leading telecommunications research projects and mentoring junior engineers in cutting-edge wireless technology development."
+start_date: "2011-01"
+end_date: "2011-12"
+title: "Technical Assistance"
+description: "Technical Assistance at Myanma Post and Telecommunication"
 category: "work"
 order: 2
 ---
