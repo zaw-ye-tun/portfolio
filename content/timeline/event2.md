@@ -1,7 +1,7 @@
 ---
-date: "2024 - Present"
-title: "Senior Research Engineer"
-description: "Leading telecommunications research projects and mentoring junior engineers in cutting-edge wireless technology development."
-category: "work"
+date: 2011-2011
+title: Technical Assistance
+description: Technical Assistance at Myanma Post and Telecommunication
+category: work
 order: 2
 ---
