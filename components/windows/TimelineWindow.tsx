@@ -4,10 +4,11 @@ import Timeline from '../Timeline';
 
 interface TimelineItem {
   id: string;
-  date: string;
+  start_date: string;
+  end_date?: string;
   title: string;
   description: string;
-  category: 'education' | 'work' | 'achievement' | 'personal';
+  category: 'education' | 'work';
 }
 
 interface TimelineWindowProps {

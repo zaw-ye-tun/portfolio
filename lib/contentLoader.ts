@@ -94,15 +94,21 @@ export function getTimelineData() {
     
     return {
       id: filename.replace('.md', ''),
-      date: data.date || '',
+      start_date: data.start_date || data.date || '',
+      end_date: data.end_date || '',
       title: data.title || '',
       description: data.description || '',
-      category: data.category || 'personal',
+      category: data.category || 'work',
       order: data.order || 0,
     };
   });
   
-  return timeline.sort((a, b) => a.order - b.order);
+  // Sort by start_date descending (newest first)
+  return timeline.sort((a, b) => {
+    const dateA = new Date(a.start_date + '-01');
+    const dateB = new Date(b.start_date + '-01');
+    return dateB.getTime() - dateA.getTime();
+  });
 }
 
 // Load Personal Story Data

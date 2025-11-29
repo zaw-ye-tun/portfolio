@@ -54,11 +54,12 @@ collections:
     delete: true
     slug: "{{slug}}"
     fields:
-      - { label: "Date", name: "date", widget: "string" }
+      - { label: "Start Date", name: "start_date", widget: "datetime", format: "YYYY-MM", date_format: "YYYY-MM", time_format: false }
+      - { label: "End Date (leave empty for Present)", name: "end_date", widget: "datetime", format: "YYYY-MM", date_format: "YYYY-MM", time_format: false, required: false }
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Category", name: "category", widget: "select", options: ["education", "work", "achievement", "personal"] }
-      - { label: "Order", name: "order", widget: "number", default: 0 }
+      - { label: "Category", name: "category", widget: "select", options: ["work", "education"] }
+      - { label: "Order", name: "order", widget: "number", default: 0, required: false }
 
   # Personal Story Collection
   - name: "personal-story"
