@@ -1,7 +1,7 @@
 ---
-date: "2020 - 2024"
-title: "Ph.D. in Telecommunications"
-description: "Completed doctoral research in advanced wireless communications systems with a focus on next-generation network architectures."
-category: "education"
+date: 2009-2010
+title: Computer Hardware Technician
+description: HW technician, security, software installation, coporate structure.
+category: work
 order: 1
 ---
