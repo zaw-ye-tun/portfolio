@@ -1,6 +1,6 @@
 'use client';
 
-import Timeline from '../Timeline';
+import GanttTimeline from '../GanttTimeline';
 
 interface TimelineItem {
   id: string;
@@ -8,7 +8,9 @@ interface TimelineItem {
   end_date?: string;
   title: string;
   description: string;
+  company_or_school?: string;
   category: 'education' | 'work';
+  color?: string;
 }
 
 interface TimelineWindowProps {
@@ -16,5 +18,5 @@ interface TimelineWindowProps {
 }
 
 export default function TimelineWindow({ data }: TimelineWindowProps) {
-  return <Timeline items={data} />;
+  return <GanttTimeline items={data} />;
 }

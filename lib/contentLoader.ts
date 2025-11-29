@@ -95,10 +95,12 @@ export function getTimelineData() {
     return {
       id: filename.replace('.md', ''),
       start_date: data.start_date || data.date || '',
-      end_date: data.end_date || '',
+      end_date: data.end_date || 'Present',
       title: data.title || '',
       description: data.description || '',
+      company_or_school: data.company_or_school || data.company || data.school || '',
       category: data.category || 'work',
+      color: data.color || '',
       order: data.order || 0,
     };
   });
