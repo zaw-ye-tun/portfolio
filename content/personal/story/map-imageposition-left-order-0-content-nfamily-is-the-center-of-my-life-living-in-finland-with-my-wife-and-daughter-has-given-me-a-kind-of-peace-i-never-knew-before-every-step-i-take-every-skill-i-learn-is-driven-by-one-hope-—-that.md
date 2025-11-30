@@ -14,6 +14,6 @@ content: >-
 
   This mix of cultures shaped the way I think and the way I work.
 image: /photos/nature_cloud2.jpg
-imagePosition: right
-order: 0
+imagePosition: left
+order: 2
 ---
