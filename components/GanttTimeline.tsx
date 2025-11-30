@@ -191,7 +191,7 @@ export default function GanttTimeline({ items }: { items: TimelineItem[] }) {
             borderRight: isWork ? `4px solid ${color}` : 'none',
           }}
         >
-          <div className="p-3 h-full flex flex-col justify-between relative">
+          <div className="p-3 h-full flex flex-col justify-between">
             {/* Title & Company */}
             <div>
               <h3 className="font-bold text-sm mb-1 text-gray-900 dark:text-white line-clamp-2">
@@ -205,16 +205,6 @@ export default function GanttTimeline({ items }: { items: TimelineItem[] }) {
             {/* Duration */}
             <div className="text-xs font-mono text-gray-500 dark:text-gray-500 mt-2">
               {formatDateRange(item.start_date, item.end_date || 'Present')}
-            </div>
-
-            {/* Category badge */}
-            <div className={`absolute top-2 ${isWork ? 'left-2' : 'right-2'}`}>
-              <span
-                className="px-2 py-1 text-xs font-semibold rounded-full text-white"
-                style={{ backgroundColor: color }}
-              >
-                {item.category === 'work' ? '💼' : '🎓'}
-              </span>
             </div>
           </div>
         </div>
@@ -244,13 +234,13 @@ export default function GanttTimeline({ items }: { items: TimelineItem[] }) {
         <div className="flex mb-4 sticky top-0 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm z-20 py-4">
           <div className="w-[45%] text-right pr-12">
             <h2 className="text-2xl font-bold text-green-600 dark:text-green-400">
-              💼 Work Experience
+              Work Experience
             </h2>
           </div>
           <div className="w-[10%]" />
           <div className="w-[45%] text-left pl-12">
             <h2 className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-              🎓 Education
+              Education
             </h2>
           </div>
         </div>
@@ -325,7 +315,7 @@ export default function GanttTimeline({ items }: { items: TimelineItem[] }) {
                 className="px-4 py-2 text-sm font-semibold rounded-full text-white"
                 style={{ backgroundColor: getColor(selectedItem) }}
               >
-                {selectedItem.category === 'work' ? '💼 Work' : '🎓 Education'}
+                {selectedItem.category === 'work' ? 'Work' : 'Education'}
               </span>
             </div>
 

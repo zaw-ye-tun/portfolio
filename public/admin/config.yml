@@ -147,8 +147,8 @@ collections:
         name: "category"
         widget: "select"
         options:
-          - { label: "💼 Work Experience", value: "work" }
-          - { label: "🎓 Education", value: "education" }
+          - { label: "Work Experience", value: "work" }
+          - { label: "Education", value: "education" }
         required: true
       - label: "Color (Optional)"
         name: "color"
