@@ -52,6 +52,9 @@ export async function GET(request: NextRequest) {
     }
 
     const token = data.access_token;
+    
+    // Properly escape the token for embedding in JavaScript
+    const tokenData = JSON.stringify({ token, provider: "github" });
 
     // Return HTML that posts message back to opener (Decap CMS)
     const html = `
@@ -90,33 +93,56 @@ export async function GET(request: NextRequest) {
     <div class="container">
       <div class="spinner"></div>
       <h2>Authentication Successful!</h2>
-      <p>Completing login...</p>
+      <p id="status">Completing login...</p>
     </div>
     <script>
       (function() {
-        function receiveMessage(e) {
-          console.log("receiveMessage %o", e);
-          if (e.data === "authorizing:github") {
-            window.opener.postMessage(
-              "authorization:github:success:${JSON.stringify({ token, provider: "github" })}",
-              e.origin
-            );
-            window.removeEventListener("message", receiveMessage, false);
-            setTimeout(function() { window.close(); }, 100);
+        var tokenData = ${tokenData};
+        var message = "authorization:github:success:" + JSON.stringify(tokenData);
+        var statusEl = document.getElementById('status');
+        
+        console.log("Token data:", tokenData);
+        console.log("Message to send:", message);
+        console.log("Window opener:", window.opener);
+        
+        function sendMessage(target, origin) {
+          try {
+            target.postMessage(message, origin);
+            console.log("Posted message to:", origin);
+            return true;
+          } catch(e) {
+            console.error("Failed to post to " + origin, e);
+            return false;
           }
         }
-        window.addEventListener("message", receiveMessage, false);
         
-        // Also try posting immediately for older Decap versions
         if (window.opener) {
-          window.opener.postMessage(
-            "authorization:github:success:${JSON.stringify({ token, provider: "github" })}",
-            "*"
-          );
-          setTimeout(function() { window.close(); }, 1500);
+          // Try multiple origins
+          sendMessage(window.opener, "https://zawyetun.net");
+          sendMessage(window.opener, "*");
+          
+          statusEl.textContent = "Login complete! Closing...";
+          
+          // Try to close after a delay
+          setTimeout(function() {
+            try {
+              window.close();
+            } catch(e) {
+              statusEl.textContent = "Login complete! You can close this window.";
+            }
+          }, 1000);
         } else {
-          document.querySelector('p').textContent = 'Login complete! You can close this window.';
+          statusEl.textContent = "Login complete! Please close this window and refresh the CMS.";
         }
+        
+        // Also listen for the CMS asking for auth
+        window.addEventListener("message", function(e) {
+          console.log("Received message:", e.data, "from:", e.origin);
+          if (e.data === "authorizing:github") {
+            sendMessage(window.opener, e.origin);
+            setTimeout(function() { window.close(); }, 100);
+          }
+        }, false);
       })();
     </script>
   </body>
