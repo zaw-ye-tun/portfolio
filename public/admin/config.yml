@@ -6,8 +6,8 @@ backend:
   name: github
   repo: zaw-ye-tun/portfolio
   branch: main
-  base_url: https://zawyetun.net
-  auth_endpoint: api/auth
+  # Use Sveltia CMS OAuth provider (free, works with Decap CMS)
+  base_url: https://api.sveltia.com
 
 media_folder: "public/photos"
 public_folder: "/photos"
