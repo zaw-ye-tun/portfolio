@@ -1,0 +1,97 @@
+# ═════════════════════════════════════════════════════════
+# PRODUCTION CONFIG (config.production.yml)
+# Use this for Vercel deployment with GitHub OAuth
+# ═════════════════════════════════════════════════════════
+
+# REMOVE local_backend in production
+# local_backend: true  ← COMMENTED OUT
+
+backend:
+  name: github
+  repo: zaw-ye-tun/portfolio
+  branch: main
+  # These settings enable GitHub OAuth
+  base_url: https://your-site.vercel.app  # Replace with your Vercel domain
+  auth_endpoint: api/auth
+
+media_folder: "public/photos"
+public_folder: "/photos"
+
+collections:
+  # Resume Collection
+  - name: "resume"
+    label: "Resume"
+    folder: "content/resume"
+    create: false
+    delete: false
+    slug: "resume"
+    fields:
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "PDF File", name: "pdfUrl", widget: "file", media_folder: "/public/resume" }
+
+  # Hobbies Collection
+  - name: "hobbies"
+    label: "Hobbies"
+    folder: "content/hobbies"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", default: 0 }
+
+  # Professional Life Collection
+  - name: "professional"
+    label: "Professional Life"
+    folder: "content/professional"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Description", name: "description", widget: "text" }
+      - { label: "Order", name: "order", widget: "number", default: 0 }
+
+  # Timeline Collection
+  - name: "timeline"
+    label: "Timeline"
+    folder: "content/timeline"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Start Date", name: "start_date", widget: "datetime", format: "YYYY-MM", date_format: "YYYY-MM", time_format: false, required: true }
+      - { label: "End Date (leave empty for Present)", name: "end_date", widget: "string", default: "Present", required: true, hint: "Use YYYY-MM format or 'Present'" }
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - { label: "Description", name: "description", widget: "text", required: true }
+      - { label: "Company or School", name: "company_or_school", widget: "string", required: true }
+      - { label: "Category", name: "category", widget: "select", options: ["work", "education"], required: true }
+      - { label: "Color (optional)", name: "color", widget: "string", required: false, hint: "Hex color like #3B82F6 or leave empty for default" }
+      - { label: "Order", name: "order", widget: "number", default: 0, required: false }
+
+  # Personal Story Collection
+  - name: "personal-story"
+    label: "Personal Story"
+    folder: "content/personal/story"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Content", name: "content", widget: "markdown" }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Order", name: "order", widget: "number", default: 0 }
+
+  # Personal Fun Facts Collection
+  - name: "personal-funfacts"
+    label: "Fun Facts"
+    folder: "content/personal/funfacts"
+    create: true
+    delete: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Fact", name: "fact", widget: "string" }
+      - { label: "Emoji", name: "emoji", widget: "string" }
+      - { label: "Order", name: "order", widget: "number", default: 0 }

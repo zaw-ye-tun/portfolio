@@ -9,9 +9,10 @@ interface DockProps {
 
 const dockApps = [
   { id: 'resume', name: 'Resume', icon: '/icons/resume.png' },
-  { id: 'hobbies', name: 'Hobbies', icon: '/icons/hobbies.png' },
+  { id: 'projects', name: 'Projects', icon: '/icons/projects.png' },
   { id: 'professional', name: 'Professional', icon: '/icons/professional.png' },
   { id: 'timeline', name: 'Timeline', icon: '/icons/timeline.png' },
+  { id: 'hobbies', name: 'Hobbies', icon: '/icons/hobbies.png' },
   { id: 'personal', name: 'About Me', icon: '/icons/personal.png' },
 ];
 

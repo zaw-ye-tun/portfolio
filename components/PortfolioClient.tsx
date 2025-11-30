@@ -3,27 +3,39 @@
 import Desktop from './Desktop';
 import Window from './Window';
 import ResumeWindow from './windows/ResumeWindow';
+import ProjectsWindow from './windows/ProjectsWindow';
 import HobbiesWindow from './windows/HobbiesWindow';
 import ProfessionalWindow from './windows/ProfessionalWindow';
 import TimelineWindow from './windows/TimelineWindow';
 import PersonalWindow from './windows/PersonalWindow';
 
+interface ResumeSettings {
+  googleDocsEmbedUrl: string;
+  pdfDownloadUrl: string;
+  description?: string;
+}
+
+interface ProjectsSettings {
+  googleSlidesEmbedUrl: string;
+  description?: string;
+}
+
 interface PortfolioClientProps {
-  resumeData: any;
+  resumeSettings: ResumeSettings;
+  projectsSettings: ProjectsSettings;
   hobbiesData: any[];
   professionalData: any[];
   timelineData: any[];
   storyData: any[];
-  funFactsData: any[];
 }
 
 export default function PortfolioClient({
-  resumeData,
+  resumeSettings,
+  projectsSettings,
   hobbiesData,
   professionalData,
   timelineData,
   storyData,
-  funFactsData,
 }: PortfolioClientProps) {
   return (
     <Desktop>
@@ -36,7 +48,17 @@ export default function PortfolioClient({
             width="1100px"
             height="750px"
           >
-            <ResumeWindow data={resumeData} />
+            <ResumeWindow settings={resumeSettings} />
+          </Window>
+
+          <Window
+            title="Projects"
+            isOpen={openApp === 'projects'}
+            onClose={onClose}
+            width="1000px"
+            height="700px"
+          >
+            <ProjectsWindow settings={projectsSettings} />
           </Window>
 
           <Window
@@ -76,7 +98,7 @@ export default function PortfolioClient({
             width="1000px"
             height="650px"
           >
-            <PersonalWindow storyData={storyData} funFactsData={funFactsData} />
+            <PersonalWindow storyData={storyData} />
           </Window>
         </>
       )}

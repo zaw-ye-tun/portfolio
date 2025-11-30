@@ -1,6 +1,6 @@
 'use client';
 
-import { FileText, Heart, Briefcase, Clock, User } from 'lucide-react';
+import { FileText, Heart, Briefcase, Clock, User, FolderKanban } from 'lucide-react';
 
 interface MobileNavProps {
   onAppOpen: (appName: string) => void;
@@ -9,9 +9,10 @@ interface MobileNavProps {
 
 const navItems = [
   { id: 'resume', name: 'Resume', icon: FileText },
-  { id: 'hobbies', name: 'Hobbies', icon: Heart },
+  { id: 'projects', name: 'Projects', icon: FolderKanban },
   { id: 'professional', name: 'Work', icon: Briefcase },
   { id: 'timeline', name: 'Timeline', icon: Clock },
+  { id: 'hobbies', name: 'Hobbies', icon: Heart },
   { id: 'personal', name: 'About', icon: User },
 ];
 

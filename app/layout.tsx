@@ -1,5 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import MobileBanner from '@/components/MobileBanner';
 
 export const metadata: Metadata = {
   title: 'My macOS Portfolio',
@@ -13,7 +14,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        {children}
+        <MobileBanner />
+      </body>
     </html>
   );
 }

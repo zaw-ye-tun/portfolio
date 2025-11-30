@@ -1,11 +1,8 @@
 ---
-content: |
-  ## My Journey
+content: >-
   
-  From a young age, I've been fascinated by how things connect and communicate. This curiosity led me to pursue telecommunications engineering, where I discovered my passion for solving complex problems in wireless communications.
-  
-  My journey has been shaped by a commitment to innovation and a drive to push the boundaries of what's possible in network technology.
-image: "/photos/story-intro.jpg"
-imagePosition: "right"
+  Family is the center of my life. Living in Finland with my wife and daughter has given me a kind of peace I never knew before. Every step I take, every skill I learn, is driven by one hope — that my daughter can grow up safely, confidently, and with a future brighter than mine. She is the reason I push myself, the source of my strength, and the heart behind everything I do..
+image: /photos/Aboutme_family.jpg
+imagePosition: right
 order: 1
 ---

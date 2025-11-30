@@ -23,22 +23,34 @@ function parseMarkdownFile(filePath: string) {
 }
 
 // Load Resume Data
-export function getResumeData() {
-  const resumePath = path.join(contentDirectory, 'resume', 'resume.md');
+export function getResumeSettings() {
+  const resumePath = path.join(contentDirectory, 'resume.json');
   
   if (!fs.existsSync(resumePath)) {
     return {
-      description: 'Resume not found',
-      pdfUrl: '/resume/resume.pdf',
+      googleDocsEmbedUrl: '',
+      pdfDownloadUrl: '',
+      description: '',
     };
   }
 
-  const { data } = parseMarkdownFile(resumePath);
+  const resumeContent = fs.readFileSync(resumePath, 'utf8');
+  return JSON.parse(resumeContent);
+}
+
+// Load Projects Data
+export function getProjectsSettings() {
+  const projectsPath = path.join(contentDirectory, 'projects.json');
   
-  return {
-    description: data.description || '',
-    pdfUrl: data.pdfUrl || '/resume/resume.pdf',
-  };
+  if (!fs.existsSync(projectsPath)) {
+    return {
+      googleSlidesEmbedUrl: '',
+      description: '',
+    };
+  }
+
+  const projectsContent = fs.readFileSync(projectsPath, 'utf8');
+  return JSON.parse(projectsContent);
 }
 
 // Load Hobbies Data
@@ -55,6 +67,7 @@ export function getHobbiesData() {
       title: data.title || '',
       image: data.image || '/photos/placeholder.jpg',
       description: data.description || '',
+      additionalImages: data.additionalImages || [],
       order: data.order || 0,
     };
   });
@@ -76,6 +89,7 @@ export function getProfessionalData() {
       title: data.title || '',
       image: data.image || '/photos/placeholder.jpg',
       description: data.description || '',
+      additionalImages: data.additionalImages || [],
       order: data.order || 0,
     };
   });

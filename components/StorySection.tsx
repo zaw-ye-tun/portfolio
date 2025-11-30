@@ -52,7 +52,7 @@ export default function StorySection({ section }: StorySectionProps) {
                 <img
                   src={section.image}
                   alt="Story"
-                  className="w-full h-64 md:h-80 object-cover"
+                  className="w-full h-auto object-contain"
                 />
               </div>
             )}
@@ -66,7 +66,7 @@ export default function StorySection({ section }: StorySectionProps) {
                 <img
                   src={section.image}
                   alt="Story"
-                  className="w-full h-64 md:h-80 object-cover"
+                  className="w-full h-auto object-contain"
                 />
               </div>
             )}

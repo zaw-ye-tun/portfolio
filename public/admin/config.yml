@@ -9,88 +9,150 @@ media_folder: "public/photos"
 public_folder: "/photos"
 
 collections:
-  # Resume Collection
-  - name: "resume"
-    label: "Resume"
-    folder: "content/resume"
-    create: false
-    delete: false
-    slug: "resume"
-    fields:
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "PDF File", name: "pdfUrl", widget: "file", media_folder: "/public/resume" }
+  # ============================================
+  # RESUME SETTINGS (Single File)
+  # ============================================
+  # Edit your Google Docs Resume URL here.
+  # The website will automatically embed your Google Doc.
+  # To update your resume, just edit the Google Doc - no code changes needed!
+  - name: "resume-settings"
+    label: "📄 Resume"
+    files:
+      - label: "Resume Settings"
+        name: "resume"
+        file: "content/resume.json"
+        fields:
+          - label: "Google Docs Embed URL"
+            name: "googleDocsEmbedUrl"
+            widget: "string"
+            hint: "Use the /preview URL. Example: https://docs.google.com/document/d/YOUR_DOC_ID/preview"
+          - label: "PDF Download URL"
+            name: "pdfDownloadUrl"
+            widget: "string"
+            hint: "Use the /export?format=pdf URL. Example: https://docs.google.com/document/d/YOUR_DOC_ID/export?format=pdf"
+          - label: "Resume Description (Optional)"
+            name: "description"
+            widget: "text"
+            required: false
+            hint: "A short description shown above the resume"
 
-  # Hobbies Collection
+  # ============================================
+  # PROJECTS SETTINGS (Single File)
+  # ============================================
+  # Edit your Google Slides URL here.
+  # The website will automatically embed your slides.
+  # To update projects, just edit the Google Slides - no code changes needed!
+  - name: "projects-settings"
+    label: "📊 Projects"
+    files:
+      - label: "Projects Settings"
+        name: "projects"
+        file: "content/projects.json"
+        fields:
+          - label: "Google Slides Embed URL"
+            name: "googleSlidesEmbedUrl"
+            widget: "string"
+            hint: "Use the /embed URL. Example: https://docs.google.com/presentation/d/YOUR_SLIDES_ID/embed?start=false&loop=false&delayms=3000"
+          - label: "Projects Description (Optional)"
+            name: "description"
+            widget: "text"
+            required: false
+            hint: "A short description shown above the projects"
+
+  # ============================================
+  # HOBBIES (Collection)
+  # ============================================
   - name: "hobbies"
-    label: "Hobbies"
+    label: "🎨 Hobbies"
     folder: "content/hobbies"
     create: true
     delete: true
     slug: "{{slug}}"
+    sortable_fields: ["order", "title"]
     fields:
       - { label: "Title", name: "title", widget: "string" }
-      - { label: "Image", name: "image", widget: "image" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Order", name: "order", widget: "number", default: 0 }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Display Order", name: "order", widget: "number", default: 0, hint: "Lower numbers appear first" }
 
-  # Professional Life Collection
+  # ============================================
+  # PROFESSIONAL LIFE (Collection)
+  # ============================================
   - name: "professional"
-    label: "Professional Life"
+    label: "💼 Professional Life"
     folder: "content/professional"
     create: true
     delete: true
     slug: "{{slug}}"
+    sortable_fields: ["order", "title"]
     fields:
-      - { label: "Title", name: "title", widget: "string" }
-      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Job Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Order", name: "order", widget: "number", default: 0 }
+      - { label: "Image", name: "image", widget: "image" }
+      - { label: "Display Order", name: "order", widget: "number", default: 0, hint: "Lower numbers appear first" }
 
-  # Timeline Collection
-  - name: "timeline"
-    label: "Timeline"
-    folder: "content/timeline"
-    create: true
-    delete: true
-    slug: "{{slug}}"
-    fields:
-      - { label: "Start Date", name: "start_date", widget: "datetime", format: "YYYY-MM", date_format: "YYYY-MM", time_format: false, required: true }
-      - { label: "End Date (leave empty for Present)", name: "end_date", widget: "string", default: "Present", required: true, hint: "Use YYYY-MM format or 'Present'" }
-      - { label: "Title", name: "title", widget: "string", required: true }
-      - { label: "Description", name: "description", widget: "text", required: true }
-      - { label: "Company or School", name: "company_or_school", widget: "string", required: true }
-      - { label: "Category", name: "category", widget: "select", options: ["work", "education"], required: true }
-      - { label: "Color (optional)", name: "color", widget: "string", required: false, hint: "Hex color like #3B82F6 or leave empty for default" }
-      - { label: "Order", name: "order", widget: "number", default: 0, required: false }
-
-  # Personal Story Collection
+  # ============================================
+  # PERSONAL STORY (Collection)
+  # ============================================
   - name: "personal-story"
-    label: "Personal Story"
+    label: "📖 Personal Story"
     folder: "content/personal/story"
     create: true
     delete: true
     slug: "{{slug}}"
+    sortable_fields: ["order"]
     fields:
+      - { label: "Title (Optional)", name: "title", widget: "string", required: false }
       - { label: "Content", name: "content", widget: "markdown" }
       - { label: "Image", name: "image", widget: "image", required: false }
       - { label: "Image Position", name: "imagePosition", widget: "select", options: ["left", "right"], default: "left", required: false }
-      - { label: "Order", name: "order", widget: "number", default: 0 }
+      - { label: "Display Order", name: "order", widget: "number", default: 0, hint: "Lower numbers appear first" }
 
-  # Personal Fun Facts Collection
-  - name: "personal-funfacts"
-    label: "Personal Fun Facts"
-    folder: "content/personal/funfacts"
+  # ============================================
+  # TIMELINE (Collection)
+  # ============================================
+  - name: "timeline"
+    label: "📅 Timeline"
+    folder: "content/timeline"
     create: true
     delete: true
     slug: "{{slug}}"
+    sortable_fields: ["start_date", "order"]
     fields:
-      - { label: "Emoji", name: "emoji", widget: "string" }
-      - { label: "Text", name: "text", widget: "string" }
-      - { label: "Color", name: "color", widget: "select", options: ["blue", "purple", "pink", "green", "yellow", "orange"], required: false }
+      - label: "Start Date"
+        name: "start_date"
+        widget: "datetime"
+        format: "YYYY-MM"
+        date_format: "YYYY-MM"
+        time_format: false
+        required: true
+      - label: "End Date"
+        name: "end_date"
+        widget: "string"
+        default: "Present"
+        required: true
+        hint: "Use YYYY-MM format (e.g., 2024-06) or 'Present' for current"
+      - { label: "Title", name: "title", widget: "string", required: true }
+      - { label: "Description", name: "description", widget: "text", required: true }
+      - { label: "Company or School", name: "company_or_school", widget: "string", required: true }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "💼 Work Experience", value: "work" }
+          - { label: "🎓 Education", value: "education" }
+        required: true
+      - label: "Color (Optional)"
+        name: "color"
+        widget: "string"
+        required: false
+        hint: "Hex color like #3B82F6 or leave empty for default"
 
-  # Site Settings
+  # ============================================
+  # SITE SETTINGS (Single File)
+  # ============================================
   - name: "settings"
-    label: "Site Settings"
+    label: "⚙️ Site Settings"
     files:
       - label: "General Settings"
         name: "general"
@@ -99,3 +161,8 @@ collections:
           - { label: "Site Title", name: "siteTitle", widget: "string", default: "My Portfolio" }
           - { label: "Site Description", name: "siteDescription", widget: "text" }
           - { label: "Author Name", name: "authorName", widget: "string" }
+          - label: "Mobile Banner Text"
+            name: "mobileBannerText"
+            widget: "string"
+            default: "Want more fun? View this in desktop mode! 🙌"
+            hint: "Message shown to mobile users"

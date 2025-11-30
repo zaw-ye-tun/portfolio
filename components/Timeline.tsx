@@ -59,7 +59,7 @@ export default function Timeline({ items }: TimelineProps) {
                 {/* Content Card (Left for work, Right for education) */}
                 <div
                   className={`w-5/12 ${
-                    isWork ? 'text-right pr-8' : 'text-left pl-8'
+                    isWork ? 'text-right pr-8' : 'text-left pl-12'
                   }`}
                   onMouseEnter={() => setExpandedId(item.id)}
                   onMouseLeave={() => setExpandedId(null)}
