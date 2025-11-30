@@ -52,11 +52,9 @@ export async function GET(request: NextRequest) {
     }
 
     const token = data.access_token;
-    
-    // Properly escape the token for embedding in JavaScript
-    const tokenData = JSON.stringify({ token, provider: "github" });
 
     // Return HTML that posts message back to opener (Decap CMS)
+    // The message format must be exactly: "authorization:github:success:{"token":"xxx","provider":"github"}"
     const html = `
 <!DOCTYPE html>
 <html>
@@ -97,50 +95,67 @@ export async function GET(request: NextRequest) {
     </div>
     <script>
       (function() {
-        var tokenData = ${tokenData};
-        var message = "authorization:github:success:" + JSON.stringify(tokenData);
+        var token = "${token}";
+        var provider = "github";
+        
+        // Message format that Decap CMS expects
+        var content = JSON.stringify({ token: token, provider: provider });
+        var message = "authorization:" + provider + ":success:" + content;
+        
         var statusEl = document.getElementById('status');
         
-        console.log("Token data:", tokenData);
-        console.log("Message to send:", message);
-        console.log("Window opener:", window.opener);
-        
-        function sendMessage(target, origin) {
-          try {
-            target.postMessage(message, origin);
-            console.log("Posted message to:", origin);
-            return true;
-          } catch(e) {
-            console.error("Failed to post to " + origin, e);
-            return false;
-          }
-        }
+        console.log("Sending auth message to opener");
+        console.log("Message:", message);
         
         if (window.opener) {
-          // Try multiple origins
-          sendMessage(window.opener, "https://zawyetun.net");
-          sendMessage(window.opener, "*");
+          // Send message immediately and repeatedly to ensure it's received
+          var attempts = 0;
+          var maxAttempts = 10;
           
-          statusEl.textContent = "Login complete! Closing...";
-          
-          // Try to close after a delay
-          setTimeout(function() {
-            try {
-              window.close();
-            } catch(e) {
-              statusEl.textContent = "Login complete! You can close this window.";
+          function tryPostMessage() {
+            if (attempts >= maxAttempts) {
+              statusEl.textContent = "Login complete! Please refresh the CMS page.";
+              return;
             }
-          }, 1000);
+            
+            attempts++;
+            console.log("Attempt " + attempts + " to post message");
+            
+            try {
+              // Post to specific origin first
+              window.opener.postMessage(message, "https://zawyetun.net");
+              // Also try wildcard
+              window.opener.postMessage(message, "*");
+            } catch(e) {
+              console.error("PostMessage error:", e);
+            }
+          }
+          
+          // Try immediately
+          tryPostMessage();
+          
+          // Then retry every 100ms for a second
+          var interval = setInterval(function() {
+            tryPostMessage();
+            if (attempts >= maxAttempts) {
+              clearInterval(interval);
+              statusEl.textContent = "Login complete! Closing window...";
+              setTimeout(function() {
+                window.close();
+              }, 500);
+            }
+          }, 100);
+          
         } else {
           statusEl.textContent = "Login complete! Please close this window and refresh the CMS.";
         }
         
-        // Also listen for the CMS asking for auth
+        // Also listen for CMS polling for auth status
         window.addEventListener("message", function(e) {
-          console.log("Received message:", e.data, "from:", e.origin);
+          console.log("Received message from CMS:", e.data);
           if (e.data === "authorizing:github") {
-            sendMessage(window.opener, e.origin);
-            setTimeout(function() { window.close(); }, 100);
+            console.log("CMS is asking for auth, sending response");
+            e.source.postMessage(message, e.origin);
           }
         }, false);
       })();
