@@ -1,9 +1,13 @@
-local_backend: true
+# Set to false for production deployment on Vercel
+# Set to true for local development with `npx decap-server`
+local_backend: false
 
 backend:
   name: github
   repo: zaw-ye-tun/portfolio
   branch: main
+  base_url: https://portfolio-zaw-ye-tuns-projects.vercel.app
+  auth_endpoint: /api/callback
 
 media_folder: "public/photos"
 public_folder: "/photos"
