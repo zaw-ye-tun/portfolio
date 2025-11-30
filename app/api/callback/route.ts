@@ -51,68 +51,76 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    const token = data.access_token;
+
     // Return HTML that posts message back to opener (Decap CMS)
     const html = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Authenticating...</title>
-          <style>
-            body {
-              font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              height: 100vh;
-              margin: 0;
-              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-              color: white;
-            }
-            .container {
-              text-align: center;
-            }
-            .spinner {
-              border: 4px solid rgba(255,255,255,0.3);
-              border-top: 4px solid white;
-              border-radius: 50%;
-              width: 40px;
-              height: 40px;
-              animation: spin 1s linear infinite;
-              margin: 20px auto;
-            }
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="spinner"></div>
-            <h2>Authentication Successful!</h2>
-            <p>Redirecting to CMS...</p>
-          </div>
-          <script>
-            (function() {
-              const token = "${data.access_token}";
-              const provider = "github";
-              
-              if (window.opener) {
-                window.opener.postMessage(
-                  "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
-                  window.location.origin
-                );
-                setTimeout(() => window.close(), 1000);
-              } else {
-                // Fallback - store token and redirect
-                localStorage.setItem("netlify-cms-user", JSON.stringify({ token: token, provider: provider }));
-                window.location.href = "/admin/";
-              }
-            })();
-          </script>
-        </body>
-      </html>
-    `;
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Authentication Successful</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+      .container { text-align: center; }
+      .spinner {
+        border: 4px solid rgba(255,255,255,0.3);
+        border-top: 4px solid white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="spinner"></div>
+      <h2>Authentication Successful!</h2>
+      <p>Completing login...</p>
+    </div>
+    <script>
+      (function() {
+        function receiveMessage(e) {
+          console.log("receiveMessage %o", e);
+          if (e.data === "authorizing:github") {
+            window.opener.postMessage(
+              "authorization:github:success:${JSON.stringify({ token, provider: "github" })}",
+              e.origin
+            );
+            window.removeEventListener("message", receiveMessage, false);
+            setTimeout(function() { window.close(); }, 100);
+          }
+        }
+        window.addEventListener("message", receiveMessage, false);
+        
+        // Also try posting immediately for older Decap versions
+        if (window.opener) {
+          window.opener.postMessage(
+            "authorization:github:success:${JSON.stringify({ token, provider: "github" })}",
+            "*"
+          );
+          setTimeout(function() { window.close(); }, 1500);
+        } else {
+          document.querySelector('p').textContent = 'Login complete! You can close this window.';
+        }
+      })();
+    </script>
+  </body>
+</html>`;
 
     return new NextResponse(html, {
       headers: {
