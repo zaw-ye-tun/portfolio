@@ -6,7 +6,7 @@ backend:
   name: github
   repo: zaw-ye-tun/portfolio
   branch: main
-  base_url: https://portfolio-zaw-ye-tuns-projects.vercel.app
+  base_url: https://zawyetun.net
   auth_endpoint: /api/callback
 
 media_folder: "public/photos"
