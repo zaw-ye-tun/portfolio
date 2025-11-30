@@ -122,9 +122,7 @@ export async function GET(request: NextRequest) {
             console.log("Attempt " + attempts + " to post message");
             
             try {
-              // Post to specific origin first
-              window.opener.postMessage(message, "https://zawyetun.net");
-              // Also try wildcard
+              // Use wildcard origin only to avoid cross-origin errors
               window.opener.postMessage(message, "*");
             } catch(e) {
               console.error("PostMessage error:", e);
