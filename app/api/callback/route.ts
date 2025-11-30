@@ -9,9 +9,17 @@ export async function GET(request: NextRequest) {
   const code = searchParams.get('code');
 
   if (!code) {
+    // If no code, redirect to auth endpoint to start OAuth flow
+    return NextResponse.redirect('https://zawyetun.net/api/auth');
+  }
+
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
     return NextResponse.json(
-      { error: 'No authorization code provided' },
-      { status: 400 }
+      { error: 'GitHub OAuth credentials not configured' },
+      { status: 500 }
     );
   }
 
@@ -26,8 +34,8 @@ export async function GET(request: NextRequest) {
           Accept: 'application/json',
         },
         body: JSON.stringify({
-          client_id: process.env.GITHUB_CLIENT_ID,
-          client_secret: process.env.GITHUB_CLIENT_SECRET,
+          client_id: clientId,
+          client_secret: clientSecret,
           code,
         }),
       }
@@ -86,15 +94,19 @@ export async function GET(request: NextRequest) {
           </div>
           <script>
             (function() {
-              const data = ${JSON.stringify(data)};
-              const message = \`authorization:github:success:\${JSON.stringify(data)}\`;
+              const token = "${data.access_token}";
+              const provider = "github";
               
               if (window.opener) {
-                window.opener.postMessage(message, window.location.origin);
+                window.opener.postMessage(
+                  "authorization:" + provider + ":success:" + JSON.stringify({ token: token, provider: provider }),
+                  window.location.origin
+                );
                 setTimeout(() => window.close(), 1000);
               } else {
-                // Fallback if opener is not available
-                window.location.href = '/admin';
+                // Fallback - store token and redirect
+                localStorage.setItem("netlify-cms-user", JSON.stringify({ token: token, provider: provider }));
+                window.location.href = "/admin/";
               }
             })();
           </script>

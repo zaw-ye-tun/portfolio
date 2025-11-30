@@ -7,7 +7,7 @@ backend:
   repo: zaw-ye-tun/portfolio
   branch: main
   base_url: https://zawyetun.net
-  auth_endpoint: /api/callback
+  auth_endpoint: api/auth
 
 media_folder: "public/photos"
 public_folder: "/photos"
