@@ -1,13 +1,17 @@
-# Set to false for production deployment on Vercel
-# Set to true for local development with `npx decap-server`
+# Decap CMS Configuration
+# 
+# HOW TO EDIT CONTENT:
+# Option 1: Run locally with `npx decap-server` and `npm run dev`
+#           Then visit http://localhost:3000/admin
+# Option 2: Edit JSON/MD files directly in GitHub
+#
+# This config uses 'test-repo' for demo purposes on production.
+# Content changes won't persist on production - use local dev or GitHub.
+
 local_backend: false
 
 backend:
-  name: github
-  repo: zaw-ye-tun/portfolio
-  branch: main
-  base_url: https://zawyetun.net
-  auth_endpoint: api/auth
+  name: test-repo
 
 media_folder: "public/photos"
 public_folder: "/photos"
