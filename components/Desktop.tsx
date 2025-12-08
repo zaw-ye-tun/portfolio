@@ -3,7 +3,6 @@
 import { ReactNode, useState, useEffect } from 'react';
 import MenuBar from './MenuBar';
 import Dock from './Dock';
-import MobileNav from './MobileNav';
 
 interface DesktopProps {
   children: (props: { openApp: string | null; onClose: () => void }) => ReactNode;
@@ -11,18 +10,7 @@ interface DesktopProps {
 
 export default function Desktop({ children }: DesktopProps) {
   const [openApp, setOpenApp] = useState<string | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
   const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   useEffect(() => {
     // Check initial theme
@@ -62,16 +50,13 @@ export default function Desktop({ children }: DesktopProps) {
       {/* Menu Bar */}
       <MenuBar />
       
-      {/* Main Desktop Area */}
-      <div className="absolute inset-0 top-7 bottom-20 md:bottom-0">
+      {/* Main Desktop Area - Leave space for dock at bottom */}
+      <div className="absolute inset-0 top-7" style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
         {children({ openApp, onClose: handleClose })}
       </div>
       
-      {/* Dock (Desktop) */}
+      {/* Dock - Always visible */}
       <Dock onAppOpen={handleAppOpen} />
-      
-      {/* Mobile Navigation */}
-      <MobileNav onAppOpen={handleAppOpen} activeApp={openApp} />
     </div>
   );
 }

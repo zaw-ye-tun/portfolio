@@ -48,13 +48,13 @@ export default function Window({
 
   if (!isOpen) return null;
 
-  // Mobile: Full-screen modal
+  // Mobile: Full-screen modal with space for dock
   if (isMobile) {
     return (
-      <div className="fixed inset-0 bottom-16 z-40 animate-slide-up">
-        <div className="absolute inset-0 bg-white dark:bg-gray-900">
-          {/* Mobile Header */}
-          <div className="sticky top-0 z-10 glass-effect border-b border-gray-200/50 dark:border-gray-700/50 px-4 py-3 flex items-center justify-between">
+      <div className="fixed inset-0 z-40 animate-slide-up" style={{ bottom: 'calc(72px + env(safe-area-inset-bottom, 0px))' }}>
+        <div className="absolute inset-0 bg-white dark:bg-gray-900 flex flex-col">
+          {/* Mobile Header - Always visible page title */}
+          <div className="sticky top-0 z-10 glass-effect border-b border-gray-200/50 dark:border-gray-700/50 px-4 py-3 flex items-center justify-between shrink-0">
             <h2 className="text-lg font-semibold">{title}</h2>
             <button
               onClick={onClose}
@@ -65,8 +65,8 @@ export default function Window({
             </button>
           </div>
           
-          {/* Mobile Content */}
-          <div className="h-[calc(100%-52px)] overflow-y-auto pb-4">
+          {/* Mobile Content with bottom padding for safety */}
+          <div className="flex-1 overflow-y-auto pb-6">
             {children}
           </div>
         </div>

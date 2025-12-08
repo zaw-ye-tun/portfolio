@@ -2,7 +2,6 @@
 
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { useForcedDesktopMode } from '@/hooks/useForcedDesktopMode';
 
 interface DockProps {
   onAppOpen: (appName: string) => void;
@@ -19,22 +18,6 @@ const dockApps = [
 
 export default function Dock({ onAppOpen }: DockProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-  const isForcedDesktopMode = useForcedDesktopMode();
-
-  useEffect(() => {
-    setIsClient(true);
-    
-    const checkMobile = () => {
-      // Consider mobile if width < 768px AND not in forced desktop mode
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
 
   const getScale = (index: number) => {
     if (hoveredIndex === null) return 1;
@@ -45,13 +28,12 @@ export default function Dock({ onAppOpen }: DockProps) {
     return 1;
   };
 
-  // Show dock if: forced desktop mode OR not mobile OR during SSR (to prevent flash)
-  const showDock = !isClient || isForcedDesktopMode || !isMobile;
-
-  if (!showDock) return null;
-
+  // Always show dock - no conditional hiding
   return (
-    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 flex items-end gap-2 sm:gap-3 px-2 sm:px-3 py-2 dock-glass rounded-2xl z-40">
+    <div 
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 flex items-end gap-2 sm:gap-3 px-2 sm:px-3 py-2 pb-safe dock-glass rounded-t-2xl sm:rounded-2xl sm:bottom-2 z-50"
+      style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
+    >
       {dockApps.map((app, index) => (
         <div
           key={app.id}
@@ -78,6 +60,13 @@ export default function Dock({ onAppOpen }: DockProps) {
             </div>
           </button>
           <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -top-8 bg-gray-800/90 text-white px-2 py-1 rounded whitespace-nowrap">
+            {app.name}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
             {app.name}
           </span>
         </div>

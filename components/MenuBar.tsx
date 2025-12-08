@@ -9,9 +9,18 @@ export default function MenuBar() {
   const [time, setTime] = useState('');
   const [isDark, setIsDark] = useState(false);
   const [openMenu, setOpenMenu] = useState<MenuType>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Check mobile viewport
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     // Initialize theme
     const theme = localStorage.getItem('theme');
     if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -22,10 +31,8 @@ export default function MenuBar() {
     // Update clock every second
     const updateClock = () => {
       const now = new Date();
+      // Shorter format on mobile
       const formatted = now.toLocaleTimeString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
         hour: 'numeric',
         minute: '2-digit',
       });
@@ -34,7 +41,11 @@ export default function MenuBar() {
 
     updateClock();
     const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   // Close menu when clicking outside
@@ -90,7 +101,8 @@ export default function MenuBar() {
 
   return (
     <div className="fixed top-0 left-0 right-0 h-7 glass-effect z-50 flex items-center justify-between px-4 text-sm">
-      <div ref={menuRef} className="flex items-center gap-4 relative">
+      {/* Desktop: File/Edit/View menus - Hidden on mobile */}
+      <div ref={menuRef} className={`flex items-center gap-4 relative ${isMobile ? 'hidden' : ''}`}>
         <span className="font-semibold"></span>
         
         {/* File Menu */}
@@ -171,6 +183,9 @@ export default function MenuBar() {
           )}
         </div>
       </div>
+      
+      {/* Mobile: Show empty space or logo placeholder */}
+      {isMobile && <div className="flex-1" />}
       
       <div className="flex items-center gap-4">
         <button
