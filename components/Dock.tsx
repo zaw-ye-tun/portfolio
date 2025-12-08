@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useForcedDesktopMode } from '@/hooks/useForcedDesktopMode';
 
 interface DockProps {
   onAppOpen: (appName: string) => void;
@@ -18,6 +19,22 @@ const dockApps = [
 
 export default function Dock({ onAppOpen }: DockProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const isForcedDesktopMode = useForcedDesktopMode();
+
+  useEffect(() => {
+    setIsClient(true);
+    
+    const checkMobile = () => {
+      // Consider mobile if width < 768px AND not in forced desktop mode
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const getScale = (index: number) => {
     if (hoveredIndex === null) return 1;
@@ -27,6 +44,11 @@ export default function Dock({ onAppOpen }: DockProps) {
     if (distance === 2) return 1.1;
     return 1;
   };
+
+  // Show dock if: forced desktop mode OR not mobile OR during SSR (to prevent flash)
+  const showDock = !isClient || isForcedDesktopMode || !isMobile;
+
+  if (!showDock) return null;
 
   return (
     <div className="fixed bottom-2 left-1/2 -translate-x-1/2 flex items-end gap-2 sm:gap-3 px-2 sm:px-3 py-2 dock-glass rounded-2xl z-40">

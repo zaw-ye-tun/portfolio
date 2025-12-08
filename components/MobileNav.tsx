@@ -1,6 +1,8 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { FileText, Heart, Briefcase, Clock, User, FolderKanban } from 'lucide-react';
+import { useForcedDesktopMode } from '@/hooks/useForcedDesktopMode';
 
 interface MobileNavProps {
   onAppOpen: (appName: string) => void;
@@ -17,11 +19,29 @@ const navItems = [
 ];
 
 export default function MobileNav({ onAppOpen, activeApp }: MobileNavProps) {
-  // Hidden - using Dock for all screen sizes now
-  return null;
-  /*
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const isForcedDesktopMode = useForcedDesktopMode();
+
+  useEffect(() => {
+    setIsClient(true);
+    
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Show mobile nav only if: on mobile AND NOT in forced desktop mode
+  const showMobileNav = isClient && isMobile && !isForcedDesktopMode;
+
+  if (!showMobileNav) return null;
+
   return (
-    <div className="fixed bottom-0 left-0 right-0 md:hidden glass-effect border-t border-gray-200/50 dark:border-gray-700/50 z-50 bg-white/90 dark:bg-gray-900/90">
+    <div className="fixed bottom-0 left-0 right-0 glass-effect border-t border-gray-200/50 dark:border-gray-700/50 z-50 bg-white/90 dark:bg-gray-900/90">
       <div className="flex items-center justify-around py-2 safe-area-bottom">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -46,5 +66,4 @@ export default function MobileNav({ onAppOpen, activeApp }: MobileNavProps) {
       </div>
     </div>
   );
-  */
 }
