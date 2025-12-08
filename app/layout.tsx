@@ -1,6 +1,6 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import MobileBanner from '@/components/MobileBanner';
+import MobileFunHint from '@/components/MobileFunHint';
 
 export const metadata: Metadata = {
   title: 'Zaw Ye Tun',
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         {children}
-        <MobileBanner />
+        <MobileFunHint />
       </body>
     </html>
   );
