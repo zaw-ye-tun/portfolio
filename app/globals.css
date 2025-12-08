@@ -14,6 +14,11 @@
     @apply transition-colors duration-300;
   }
 
+  /* Safe area for mobile devices with notch/home indicator */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
   /* Hide scrollbar for Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {
     display: none;

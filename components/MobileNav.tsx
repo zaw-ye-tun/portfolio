@@ -17,9 +17,12 @@ const navItems = [
 ];
 
 export default function MobileNav({ onAppOpen, activeApp }: MobileNavProps) {
+  // Hidden - using Dock for all screen sizes now
+  return null;
+  /*
   return (
-    <div className="fixed bottom-0 left-0 right-0 md:hidden glass-effect border-t border-gray-200/50 dark:border-gray-700/50 z-50">
-      <div className="flex items-center justify-around py-2">
+    <div className="fixed bottom-0 left-0 right-0 md:hidden glass-effect border-t border-gray-200/50 dark:border-gray-700/50 z-50 bg-white/90 dark:bg-gray-900/90">
+      <div className="flex items-center justify-around py-2 safe-area-bottom">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = activeApp === item.id;
@@ -43,4 +46,5 @@ export default function MobileNav({ onAppOpen, activeApp }: MobileNavProps) {
       </div>
     </div>
   );
+  */
 }

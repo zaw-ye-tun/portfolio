@@ -51,7 +51,7 @@ export default function Window({
   // Mobile: Full-screen modal
   if (isMobile) {
     return (
-      <div className="fixed inset-0 z-50 animate-slide-up">
+      <div className="fixed inset-0 bottom-16 z-40 animate-slide-up">
         <div className="absolute inset-0 bg-white dark:bg-gray-900">
           {/* Mobile Header */}
           <div className="sticky top-0 z-10 glass-effect border-b border-gray-200/50 dark:border-gray-700/50 px-4 py-3 flex items-center justify-between">
@@ -66,7 +66,7 @@ export default function Window({
           </div>
           
           {/* Mobile Content */}
-          <div className="h-[calc(100vh-60px)] overflow-y-auto">
+          <div className="h-[calc(100%-52px)] overflow-y-auto pb-4">
             {children}
           </div>
         </div>

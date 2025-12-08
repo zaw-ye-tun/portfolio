@@ -29,7 +29,7 @@ export default function Dock({ onAppOpen }: DockProps) {
   };
 
   return (
-    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 hidden md:flex items-end gap-3 px-3 py-2 dock-glass rounded-2xl z-40">
+    <div className="fixed bottom-2 left-1/2 -translate-x-1/2 flex items-end gap-2 sm:gap-3 px-2 sm:px-3 py-2 dock-glass rounded-2xl z-40">
       {dockApps.map((app, index) => (
         <div
           key={app.id}
@@ -45,7 +45,7 @@ export default function Dock({ onAppOpen }: DockProps) {
             }}
             aria-label={`Open ${app.name}`}
           >
-            <div className="w-14 h-14 rounded-2xl overflow-hidden shadow-lg">
+            <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl overflow-hidden shadow-lg">
               <Image
                 src={app.icon}
                 alt={app.name}
