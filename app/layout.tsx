@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: 'Zaw Ye Tun',
   description: 'A modern macOS-style portfolio showcasing my work and journey',
   icons: {
-    icon: '/favicon.png',
+    icon: '/favicon.ico',
   },
 };
 
@@ -17,6 +17,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body>
         {children}
         <MobileFunHint />
