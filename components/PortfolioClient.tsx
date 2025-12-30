@@ -37,29 +37,35 @@ export default function PortfolioClient({
   timelineData,
   storyData,
 }: PortfolioClientProps) {
+  const hiddenAppIds = new Set(['resume', 'projects']);
+
   return (
     <Desktop>
       {({ openApp, onClose }) => (
         <>
-          <Window
-            title="Resume"
-            isOpen={openApp === 'resume'}
-            onClose={onClose}
-            width="1100px"
-            height="750px"
-          >
-            <ResumeWindow settings={resumeSettings} />
-          </Window>
+          {!hiddenAppIds.has('resume') && (
+            <Window
+              title="Resume"
+              isOpen={openApp === 'resume'}
+              onClose={onClose}
+              width="1100px"
+              height="750px"
+            >
+              <ResumeWindow settings={resumeSettings} />
+            </Window>
+          )}
 
-          <Window
-            title="Projects"
-            isOpen={openApp === 'projects'}
-            onClose={onClose}
-            width="1000px"
-            height="700px"
-          >
-            <ProjectsWindow settings={projectsSettings} />
-          </Window>
+          {!hiddenAppIds.has('projects') && (
+            <Window
+              title="Projects"
+              isOpen={openApp === 'projects'}
+              onClose={onClose}
+              width="1000px"
+              height="700px"
+            >
+              <ProjectsWindow settings={projectsSettings} />
+            </Window>
+          )}
 
           <Window
             title="Hobbies"

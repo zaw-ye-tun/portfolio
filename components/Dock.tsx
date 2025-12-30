@@ -1,11 +1,13 @@
 'use client';
 
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 interface DockProps {
   onAppOpen: (appName: string) => void;
 }
+
+const hiddenAppIds = new Set(['resume', 'projects']);
 
 const dockApps = [
   { id: 'resume', name: 'Resume', icon: '/icons/resume.png' },
@@ -14,7 +16,7 @@ const dockApps = [
   { id: 'timeline', name: 'Timeline', icon: '/icons/timeline.png' },
   { id: 'hobbies', name: 'Hobbies', icon: '/icons/hobbies.png' },
   { id: 'personal', name: 'About Me', icon: '/icons/personal.png' },
-];
+].filter((app) => !hiddenAppIds.has(app.id));
 
 export default function Dock({ onAppOpen }: DockProps) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
@@ -28,9 +30,8 @@ export default function Dock({ onAppOpen }: DockProps) {
     return 1;
   };
 
-  // Always show dock - no conditional hiding
   return (
-    <div 
+    <div
       className="fixed bottom-0 left-1/2 -translate-x-1/2 flex items-end gap-2 sm:gap-3 px-2 sm:px-3 py-2 pb-safe dock-glass rounded-t-2xl sm:rounded-2xl sm:bottom-2 z-50"
       style={{ paddingBottom: 'max(8px, env(safe-area-inset-bottom))' }}
     >
@@ -60,13 +61,6 @@ export default function Dock({ onAppOpen }: DockProps) {
             </div>
           </button>
           <span className="text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 absolute -top-8 bg-gray-800/90 text-white px-2 py-1 rounded whitespace-nowrap">
-            {app.name}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
             {app.name}
           </span>
         </div>
